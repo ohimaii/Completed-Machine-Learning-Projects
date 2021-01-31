@@ -11,7 +11,7 @@ What are the most popular Airbnb room and property types in Seattle?
 What listing features would be most helpful if we wanted to predict rental prices?"
 
 
-Target Variable
+Target Variable - 
 The target variable for this project is Rental Price.
 
 Data Source: https://www.kaggle.com/airbnb/seattle
