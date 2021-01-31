@@ -1,2 +1,2 @@
-# udacity-ds-nanodegree
-This repository contains projects from Udacity's Data Scientist Nanodegree and will be updated periodically
+# machine-learning-projects
+This repository contains projects that contain some reference to machine learning processes and/or algorithms and will be updated periodically
