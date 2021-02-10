@@ -3,16 +3,21 @@ The purpose of this project is to use Natural Language Processing techniques to 
 
 ### Files and Folders
 app
+
 | - template : Contains HTML files for the web app
 | |- master.html : Main page of web app
 | |- go.html : Classification result page of web app
 |- run.py : Flask file that runs app
+
 data
+
 |- disaster_categories.csv : Data to process
 |- disaster_messages.csv : Data to process
 |- process_data.py : Python script for data pre-processing and cleaning
 |- InsertDatabaseName.db :  Database to save clean data to
+
 models
+
 |- train_classifier.py : Python script to train the ML Classifier
 |- classifier.pkl : Saved model
 
