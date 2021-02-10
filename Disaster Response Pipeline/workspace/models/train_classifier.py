@@ -79,37 +79,41 @@ def clean_tokenize(text):
     return tokens
 
     
-def build_model(classifier):
+def build_model(X_train, Y_train, classifier):
     '''This function builds a model pipeline for the selected classifier
     Output - Classification Pipeline
     '''
     scaler = StandardScaler(with_mean = False)
     vect = CountVectorizer(tokenizer = clean_tokenize)
     tfidf = TfidfTransformer()
-    clf = MultiOutputClassifier(classifier(n_estimators = 90, random_state = 5))
+    clf = MultiOutputClassifier(classifier(random_state = 5))
     # Build Pipeline
     pipeline = Pipeline([   
                     ('vect', vect),
                     ('tfidf', tfidf),
                     ('scaler', scaler),
                     ('clf', clf)])
-
-    return pipeline
-
-def improve_model(X_train, Y_train, pipeline):
-'''This function iterates through a set of parameters to pick the
-best suited for model accuracy'''
-#     define parameters for GridSearchCV
+    #define parameters for GridSearchCV
     parameters = {'clf__estimator__n_estimators': [50, 70, 90]}
 
-#     create gridsearch object and return as final model pipeline
+    #create gridsearch object and return as final model pipeline
     cv_object = GridSearchCV(estimator = pipeline, 
                         param_grid = parameters, 
                         scoring = 'accuracy', cv = 3, n_jobs = -1)
     cv_object.fit(X_train, Y_train)
     best_parameters = cv_object.best_params_
 
-    print(best_parameters)
+    print("The best parameters are: {}".format(best_parameters))
+    
+    final_pipeline = Pipeline([   
+                    ('vect', vect),
+                    ('tfidf', tfidf),
+                    ('scaler', scaler),
+                    ('clf', MultiOutputClassifier(
+                        classifier(n_estimators = best_parameters['clf__estimator__n_estimators'],
+                                   random_state = 5)))])
+    return final_pipeline
+
 
 def display_results(model, X_test, Y_test, category_names):
     '''This function displays classification results for each
@@ -132,7 +136,6 @@ def save_model(model, model_filepath):
     pkl.dump(model, open(model_filepath, 'wb'))
 
 
-
 def main():
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
@@ -141,10 +144,7 @@ def main():
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
         
         print('Building model...')
-        model = build_model(AdaBoostClassifier)
-        
-        print('Getting best Parameters...')
-        improve_model(X_train, Y_train, model)
+        model = build_model(X_train, Y_train, AdaBoostClassifier)
         
         print('Training model...')
         model.fit(X_train, Y_train)
