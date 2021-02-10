@@ -1,4 +1,20 @@
 # Disaster Response Pipeline Project
+The purpose of this project is to use Natural Language Processing techniques to build a web application that aids people and/or organizations in responding to disaster reports. The web application takes in a user input message and classifies the message based on 36 Disaster Response categories
+
+## Files and Folders
+app
+| - template : Contains HTML files for the web app
+| |- master.html : Main page of web app
+| |- go.html : Classification result page of web app
+|- run.py : Flask file that runs app
+data
+|- disaster_categories.csv : Data to process
+|- disaster_messages.csv : Data to process
+|- process_data.py : Python script for data pre-processing and cleaning
+|- InsertDatabaseName.db :  Database to save clean data to
+models
+|- train_classifier.py : Python script to train the ML Classifier
+|- classifier.pkl : Saved model
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -12,3 +28,4 @@
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
+
