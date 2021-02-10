@@ -96,20 +96,20 @@ def build_model(classifier):
 
     return pipeline
 
-# def improve_model(X_train, Y_train, pipeline):
-# '''This function iterates through a set of parameters to pick the
-# best suited for model accuracy'''
+def improve_model(X_train, Y_train, pipeline):
+'''This function iterates through a set of parameters to pick the
+best suited for model accuracy'''
 #     define parameters for GridSearchCV
-#    parameters = {'clf__estimator__n_estimators': [50, 70, 90]}
+    parameters = {'clf__estimator__n_estimators': [50, 70, 90]}
 
 #     create gridsearch object and return as final model pipeline
-#    cv_object = GridSearchCV(estimator = pipeline, 
-#                         param_grid = parameters, 
-#                         scoring = 'accuracy', cv = 3, n_jobs = -1)
-#    cv_object.fit(X_train, Y_train)
-#    best_parameters = cv_object.best_params_
+    cv_object = GridSearchCV(estimator = pipeline, 
+                        param_grid = parameters, 
+                        scoring = 'accuracy', cv = 3, n_jobs = -1)
+    cv_object.fit(X_train, Y_train)
+    best_parameters = cv_object.best_params_
 
-#    print(best_parameters)
+    print(best_parameters)
 
 def display_results(model, X_test, Y_test, category_names):
     '''This function displays classification results for each
@@ -143,8 +143,8 @@ def main():
         print('Building model...')
         model = build_model(AdaBoostClassifier)
         
-#         print('Getting best Parameters...')
-#         improve_model(X_train, Y_train, model)
+        print('Getting best Parameters...')
+        improve_model(X_train, Y_train, model)
         
         print('Training model...')
         model.fit(X_train, Y_train)
