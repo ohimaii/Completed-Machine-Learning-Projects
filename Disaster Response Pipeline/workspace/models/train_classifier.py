@@ -46,6 +46,8 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 def find_replace_urls(text):
+    ''' This function takes in text, searches for urls 
+    using the specified url regex, and replaces the urls with a placeholder'''
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     
     # get list of all urls using regex
@@ -78,31 +80,43 @@ def clean_tokenize(text):
 
     
 def build_model(classifier):
+    '''This function builds a model pipeline for the selected classifier
+    Output - Classification Pipeline
+    '''
     scaler = StandardScaler(with_mean = False)
     vect = CountVectorizer(tokenizer = clean_tokenize)
     tfidf = TfidfTransformer()
-    clf = MultiOutputClassifier(classifier(random_state = 5))
+    clf = MultiOutputClassifier(classifier(n_estimators = 90, random_state = 5))
     # Build Pipeline
     pipeline = Pipeline([   
                     ('vect', vect),
                     ('tfidf', tfidf),
                     ('scaler', scaler),
                     ('clf', clf)])
+
     return pipeline
 
-'''def train_pipeline(X, Y , pipeline):
-    # Load Data
-    #X, y = load_data(database_filepath)
+# def improve_model(X_train, Y_train, pipeline):
+# '''This function iterates through a set of parameters to pick the
+# best suited for model accuracy'''
+#     define parameters for GridSearchCV
+#    parameters = {'clf__estimator__n_estimators': [50, 70, 90]}
 
-    # Split into train and validation sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 1)
-    
-    pipeline.fit(X_train, y_train)
+#     create gridsearch object and return as final model pipeline
+#    cv_object = GridSearchCV(estimator = pipeline, 
+#                         param_grid = parameters, 
+#                         scoring = 'accuracy', cv = 3, n_jobs = -1)
+#    cv_object.fit(X_train, Y_train)
+#    best_parameters = cv_object.best_params_
 
-    # Train Pipeline
-    return 'X_test:', X_test, 'y_test:' y_test'''
+#    print(best_parameters)
 
 def display_results(model, X_test, Y_test, category_names):
+    '''This function displays classification results for each
+    category
+    Outputs - 1. Precision, Recall, F1-Score, Support for each category
+              2. Overall accuracy score for the classification
+    '''
     Y_pred = model.predict(X_test)
     accuracy = (Y_pred == Y_test).mean()
     # Print the classification report for each label
@@ -112,14 +126,9 @@ def display_results(model, X_test, Y_test, category_names):
     accuracy = (Y_pred == Y_test).mean()
     print('Model Accuracy {:.3f}'.format(accuracy))
     
-    
-#def build_model():
-
-#def evaluate_model(model, X_test, Y_test, category_names):
-#pass
-
 
 def save_model(model, model_filepath):
+    '''This function saves the model as a pickle (.pkl) file'''
     pkl.dump(model, open(model_filepath, 'wb'))
 
 
@@ -134,10 +143,12 @@ def main():
         print('Building model...')
         model = build_model(AdaBoostClassifier)
         
+#         print('Getting best Parameters...')
+#         improve_model(X_train, Y_train, model)
         
         print('Training model...')
         model.fit(X_train, Y_train)
-        
+
         print('Evaluating model...')
         display_results(model, X_test, Y_test, category_names)
 
