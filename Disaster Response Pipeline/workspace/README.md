@@ -1,7 +1,7 @@
 # Disaster Response Pipeline Project
 The purpose of this project is to use Natural Language Processing techniques to build a web application that aids people and/or organizations in responding to disaster reports. The web application takes in a user input message and classifies the message based on 36 Disaster Response categories
 
-## Files and Folders
+### Files and Folders
 app
 | - template : Contains HTML files for the web app
 | |- master.html : Main page of web app
