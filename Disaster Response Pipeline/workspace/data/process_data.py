@@ -29,13 +29,13 @@ def clean_data(df):
     Output:
     df - new dataframe with individual binary category columns
     '''
-    # create a dataframe of the 36 individual category columns
+    # create a dataframe of the 36 individual category columns, splitting by the ";" delimiter
     categories = df['categories'].str.split(';', expand = True)
     
-    # select the first row of the categories dataframe
+    # select the first row of the categories dataframe and store in a list
     row = list(categories.iloc[0,:])
 
-    # use this row to extract a list of new column names for categories with slicing 
+    # use the `row` list above to extract a list of new column names for categories by slicing 
     category_colnames = [category[:-2] for category in row]
     
     # rename the columns of the new categories dataframe
